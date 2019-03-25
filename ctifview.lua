@@ -264,8 +264,9 @@ end
 
 if args[1] == nil then
   return M;
-else then
-  local image = M.loadImage(args[1])
+else
+  print('Loading image ' .. args[1])
+  local image = loadImage(args[1])
   drawImage(image)
   
   while true do
