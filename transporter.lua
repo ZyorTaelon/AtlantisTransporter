@@ -24,7 +24,7 @@ local main_thread = thread.create(function()
   while continueLoop do
     local id, _, x, y = event.pullMultiple("touch", "interrupted")
     if id == "touch" then
-      print("user clicked", x, y)
+      gpu.set(x, y, "user clicked (" .. x .. ',' .. y ..')')
     end
   end
 end)
