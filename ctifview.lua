@@ -48,7 +48,7 @@ function M.init()
   end
 end
 
-init()
+M.init()
 
 function M.error(msg)
   if type(msg) == 'string' then
@@ -76,7 +76,7 @@ function M.resetPalette(data)
  end
 end
 
-resetPalette(nil)
+M.resetPalette(nil)
 
 function M.r8(file)
   local byte = file:read(1)
@@ -88,8 +88,8 @@ function M.r8(file)
 end
 
 function M.r16(file)
-  local x = r8(file)
-  return x | (r8(file) << 8)
+  local x = M.r8(file)
+  return x | (M.r8(file) << 8)
 end
 
 function M.loadImage(filename)
@@ -98,54 +98,54 @@ function M.loadImage(filename)
   local hdr = {67,84,73,70}
 
   for i=1,4 do
-    if r8(file) ~= hdr[i] then
-      error("Invalid header!")
+    if M.r8(file) ~= hdr[i] then
+      M.error("Invalid header!")
     end
   end
 
-  local hdrVersion = r8(file)
-  local platformVariant = r8(file)
-  local platformId = r16(file)
+  local hdrVersion = M.r8(file)
+  local platformVariant = M.r8(file)
+  local platformId = M.r16(file)
 
   if hdrVersion > 1 then
-    error("Unknown header version: " .. hdrVersion)
+    M.error("Unknown header version: " .. hdrVersion)
   end
 
   if platformId ~= 1 or platformVariant ~= 0 then
-    error("Unsupported platform ID: " .. platformId .. ":" .. platformVariant)
+    M.error("Unsupported platform ID: " .. platformId .. ":" .. platformVariant)
   end
 
   data[1] = {}
   data[2] = {}
   data[3] = {}
-  data[2][1] = r8(file)
-  data[2][1] = (data[2][1] | (r8(file) << 8))
-  data[2][2] = r8(file)
-  data[2][2] = (data[2][2] | (r8(file) << 8))
+  data[2][1] = M.r8(file)
+  data[2][1] = (data[2][1] | (M.r8(file) << 8))
+  data[2][2] = M.r8(file)
+  data[2][2] = (data[2][2] | (M.r8(file) << 8))
 
-  local pw = r8(file)
-  local ph = r8(file)
+  local pw = M.r8(file)
+  local ph = M.r8(file)
   if not (pw == 2 and ph == 4) then
-    error("Unsupported character width: " .. pw .. "x" .. ph)
+    M.error("Unsupported character width: " .. pw .. "x" .. ph)
   end
 
-  data[2][3] = r8(file)
+  data[2][3] = M.r8(file)
   if (data[2][3] ~= 4 and data[2][3] ~= 8) or data[2][3] > gpu.getDepth() then
-    error("Unsupported bit depth: " .. data[2][3])
+    M.error("Unsupported bit depth: " .. data[2][3])
   end
 
-  local ccEntrySize = r8(file)
-  local customColors = r16(file)
+  local ccEntrySize = M.r8(file)
+  local customColors = M.r16(file)
   if customColors > 0 and ccEntrySize ~= 3 then
-    error("Unsupported palette entry size: " .. ccEntrySize)
+    M.error("Unsupported palette entry size: " .. ccEntrySize)
   end
   if customColors > 16 then
-    error("Unsupported palette entry amount: " .. customColors)
+    M.error("Unsupported palette entry amount: " .. customColors)
   end
 
   for p=0,customColors-1 do
-    local w = r16(file)
-    data[3][p] = w | (r8(file) << 16)
+    local w = M.r16(file)
+    data[3][p] = w | (M.r8(file) << 16)
   end
 
   local WIDTH = data[2][1]
@@ -154,9 +154,9 @@ function M.loadImage(filename)
   for y=0,HEIGHT-1 do
     for x=0,WIDTH-1 do
       local j = (y * WIDTH) + x + 1
-      local w = r16(file)
+      local w = M.r16(file)
       if data[2][3] > 4 then
-        data[1][j] = w | (r8(file) << 16)
+        data[1][j] = w | (M.r8(file) << 16)
       else
         data[1][j] = w
       end
@@ -192,7 +192,7 @@ function M.drawImage(data, offx, offy)
   local HEIGHT = data[2][2]
 
   gpu.setResolution(WIDTH, HEIGHT)
-  resetPalette(data)
+  M.resetPalette(data)
 
   local bg = 0
   local fg = 0
@@ -201,8 +201,8 @@ function M.drawImage(data, offx, offy)
   local noFG = false
   local ind = 1
 
-  local gBG = gpuBG()
-  local gFG = gpuFG()
+  local gBG = M.gpuBG()
+  local gFG = M.gpuFG()
 
   for y=0,HEIGHT-1 do
     local str = ""
@@ -254,8 +254,8 @@ end
 
 function M.show(path)
   print('Loading image ' .. args[1])
-  local image = loadImage(path)
-  drawImage(image)
+  local image = M.loadImage(path)
+  M.drawImage(image)
 end
 
 function M.clear()
@@ -268,7 +268,7 @@ end
 if args[1] == 'ctifview' then
   return M;
 else
-  show(args[1])
+  M.show(args[1])
   
   while true do
       local name,addr,char,key,player = event.pull("key_down")
@@ -276,7 +276,5 @@ else
           break
       end
   end
-  clear();
+  M.clear();
 end
-
-return M;
