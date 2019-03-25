@@ -14,7 +14,7 @@ local cleanup_thread = thread.create(function()
   event.pull("interrupted")
   continueLoop = false
   print("Interrupt received. Exiting")
-  cleanup_thread()
+  ctifview.clear();
 end)
 
 local main_thread = thread.create(function()
