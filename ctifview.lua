@@ -30,8 +30,9 @@ local keyboard = require("keyboard")
 local text = require("text")
 local os = require("os")
 local pal = {}
-local WIDTH = 80
-local HEIGHT = 25
+local w, h = gpu.getResolution()
+local WIDTH = w
+local HEIGHT = h
 local loadedImage = {}
 
 local M = {};
@@ -259,8 +260,8 @@ end
 function M.clear()
   gpu.setBackground(0, false)
   gpu.setForeground(16777215, false)
-  gpu.setResolution(80, 25)
-  gpu.fill(1, 1, 80, 25, " ")
+  gpu.setResolution(w, h)
+  gpu.fill(1, 1, w, h, " ")
 end
 
 if args[1] == 'ctifview' then
