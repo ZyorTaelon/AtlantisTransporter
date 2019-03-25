@@ -5,7 +5,8 @@ local component = require("component")
 local unicode = require("unicode")
 local gpu = component.gpu;
 local transporters = {
-  gateRoom = {59,30}
+  gateRoom = {59,30},
+  westPier = {16,30}
 }
 
 
