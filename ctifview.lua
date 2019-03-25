@@ -50,9 +50,11 @@ end
 
 init()
 
-function M.error(str)
-  print("ERROR: " .. str)
-  os.exit()
+function M.error(msg)
+  if type(msg) == 'string' then
+    print("ERROR: " .. msg)
+    os.exit()
+  end
 end
 
 function M.resetPalette(data)
