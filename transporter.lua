@@ -23,7 +23,7 @@ local lastY=nil
 local lastLen=nil
 function debugLocation(x, y)
   if lastX ~= nil then
-    ctifview.drawImageSection(lastX-1, lastX+lastLen, lastY-1, lastY+1)
+    ctifview.drawImageSection(0, 80, lastY-1, lastY+1)
   end   
 
   lastX = x
