@@ -31,18 +31,24 @@ local text = require("text")
 local os = require("os")
 local pal = {}
 
+local M = {};
+
 local q = {}
-for i=0,255 do
-  local dat = (i & 0x01) << 7
-  dat = dat | (i & 0x02) >> 1 << 6
-  dat = dat | (i & 0x04) >> 2 << 5
-  dat = dat | (i & 0x08) >> 3 << 2
-  dat = dat | (i & 0x10) >> 4 << 4
-  dat = dat | (i & 0x20) >> 5 << 1
-  dat = dat | (i & 0x40) >> 6 << 3
-  dat = dat | (i & 0x80) >> 7
-  q[i + 1] = unicode.char(0x2800 | dat)
+function init()
+  for i=0,255 do
+    local dat = (i & 0x01) << 7
+    dat = dat | (i & 0x02) >> 1 << 6
+    dat = dat | (i & 0x04) >> 2 << 5
+    dat = dat | (i & 0x08) >> 3 << 2
+    dat = dat | (i & 0x10) >> 4 << 4
+    dat = dat | (i & 0x20) >> 5 << 1
+    dat = dat | (i & 0x40) >> 6 << 3
+    dat = dat | (i & 0x80) >> 7
+    q[i + 1] = unicode.char(0x2800 | dat)
+  end
 end
+
+init()
 
 function error(str)
   print("ERROR: " .. str)
@@ -244,17 +250,21 @@ function drawImage(data, offx, offy)
   end
 end
 
-local image = loadImage(args[1])
-drawImage(image)
-
-while true do
-    local name,addr,char,key,player = event.pull("key_down")
-    if key == 0x10 then
-        break
-    end
+function M.show(path)
+  local image = loadImage(path)
+  drawImage(image)
 end
 
-gpu.setBackground(0, false)
-gpu.setForeground(16777215, false)
-gpu.setResolution(80, 25)
-gpu.fill(1, 1, 80, 25, " ")
+--while true do
+--    local name,addr,char,key,player = event.pull("key_down")
+--    if key == 0x10 then
+--        break
+--    end
+--end
+
+function M.clear()
+  gpu.setBackground(0, false)
+  gpu.setForeground(16777215, false)
+  gpu.setResolution(80, 25)
+  gpu.fill(1, 1, 80, 25, " ")
+end
