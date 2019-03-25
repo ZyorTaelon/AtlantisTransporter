@@ -191,7 +191,7 @@ function M.gpuFG()
   end
 end
 
-function M.drawImage()
+function M.drawImageSection(xEnd, yEnd)
   local data = loadedImage
   local bg = 0
   local fg = 0
@@ -203,9 +203,9 @@ function M.drawImage()
   local gBG = M.gpuBG()
   local gFG = M.gpuFG()
 
-  for y=0,HEIGHT-1 do
+  for y=0,yEnd-1 do
     local str = ""
-    for x=0,WIDTH-1 do
+    for x=0,xEnd-1 do
       ind = (y * WIDTH) + x + 1
       if data[2][3] > 4 then
         bg = pal[data[1][ind] & 0xFF]
@@ -249,6 +249,10 @@ function M.drawImage()
       gpu.set(WIDTH + 1 - unicode.wlen(str), y + 1, str)
     end
   end
+end
+
+function M.drawImage()
+  M.drawImageSection(WIDTH, HEIGHT)
 end
 
 function M.show(path)
