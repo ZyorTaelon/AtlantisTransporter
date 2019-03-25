@@ -189,13 +189,7 @@ function M.gpuFG()
   end
 end
 
-function M.drawImage(data, offx, offy)
-  if offx == nil then offx = 0 end
-  if offy == nil then offy = 0 end
-
---  local WIDTH = data[2][1]
---  local HEIGHT = data[2][2]
-
+function M.drawImage(data)
 
   local bg = 0
   local fg = 0
@@ -229,7 +223,7 @@ function M.drawImage(data, offx, offy)
         str = str .. q[cw]
       else
         if #str > 0 then
-          gpu.set(x + 1 + offx - unicode.wlen(str), y + 1 + offy, str)
+          gpu.set(x + 1 - unicode.wlen(str), y + 1, str)
         end
         if (gBG == fg and gFG ~= bg) or (gFG == bg and gBG ~= fg) then
           cw = 257 - cw
@@ -250,7 +244,7 @@ function M.drawImage(data, offx, offy)
       end
     end
     if #str > 0 then
-      gpu.set(WIDTH + 1 - unicode.wlen(str) + offx, y + 1 + offy, str)
+      gpu.set(WIDTH + 1 - unicode.wlen(str), y + 1, str)
     end
   end
 end
