@@ -16,7 +16,8 @@ local cleanup_thread = thread.create(function()
 end)
 
 local main_thread = thread.create(function()
-  print("Waiting for incoming commands:")
+  ctifview.show('lib/TransporterDisplay_320.png')
+  print("Waiting for incoming events:")
   while continueLoop do
     local id, _, x, y = event.pullMultiple("touch", "interrupted")
     if id == "touch" then
