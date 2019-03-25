@@ -2,6 +2,7 @@ local event = require("event") -- load event table and store the pointer to it i
 local thread = require("thread")
 local ctifview = require("ctifview")
 local component = require("component")
+local unicode = require("unicode")
 local gpu = component.gpu;
 
 function unknownEvent()
@@ -20,11 +21,23 @@ end)
 local main_thread = thread.create(function()
   ctifview.show('lib/TransporterDisplay_320.ctif')
   print("Waiting for incoming events:")
-  gpu.setForeground(0xFFFFFF)
+  
+  local lastX=nil
+  local lastY=nil
+  local lastLen=nil;
   while continueLoop do
     local id, _, x, y = event.pullMultiple("touch", "interrupted")
     if id == "touch" then
-      gpu.set(x, y, "user clicked (" .. x .. ',' .. y ..')')
+      if lastX ~= nil then
+        ctifview.drawImageSection(lastX-1, lastX+lastLen+1, lastY-1, lastY+1)
+      end   
+         
+      local msg = "user clicked (" .. x .. "," .. y .. ")"
+      gpu.setForeground(0xFFFFFF)
+      gpu.set(x, y, msg)
+      lastX = x
+      lastY = y
+      lastLen = unicode.wlen(msg)
     end
   end
 end)
