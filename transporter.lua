@@ -41,7 +41,9 @@ function debugLocation(x, y)
 end
 
 function activateTransporter(x, y)
-  ctifview.drawImageSection(1, 1, 40, 2)
+  gpu.setForeground(0x0)
+  gpu.setBackground(0x0)
+  gpu.set(2, 2, "                        ")
   for k, v in pairs(transporters) do
     if (v[1]-3 < x) and  (x < v[1]+3) and (v[2]-3 < y) and (y < v[2]+3) then
       gpu.setForeground(0xFFFFFF)
