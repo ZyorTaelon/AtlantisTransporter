@@ -30,6 +30,8 @@ local keyboard = require("keyboard")
 local text = require("text")
 local os = require("os")
 local pal = {}
+local WIDTH = 80
+local HEIGHT = 25
 
 local M = {};
 
@@ -148,8 +150,8 @@ function M.loadImage(filename)
     data[3][p] = w | (M.r8(file) << 16)
   end
 
-  local WIDTH = data[2][1]
-  local HEIGHT = data[2][2]
+  WIDTH = data[2][1]
+  HEIGHT = data[2][2]
 
   for y=0,HEIGHT-1 do
     for x=0,WIDTH-1 do
@@ -164,6 +166,9 @@ function M.loadImage(filename)
   end
 
   io.close(file)
+  
+  gpu.setResolution(WIDTH, HEIGHT)
+  M.resetPalette(data)
   return data
 end
 
@@ -188,11 +193,9 @@ function M.drawImage(data, offx, offy)
   if offx == nil then offx = 0 end
   if offy == nil then offy = 0 end
 
-  local WIDTH = data[2][1]
-  local HEIGHT = data[2][2]
+--  local WIDTH = data[2][1]
+--  local HEIGHT = data[2][2]
 
-  gpu.setResolution(WIDTH, HEIGHT)
-  M.resetPalette(data)
 
   local bg = 0
   local fg = 0
