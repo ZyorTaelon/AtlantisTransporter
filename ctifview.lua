@@ -191,7 +191,12 @@ function M.gpuFG()
   end
 end
 
-function M.drawImageSection(xStart, xEnd, yStart, yEnd)
+function M.drawImageSection(_xStart, xEnd, _yStart, yEnd)
+  xStart = math.max(0,_xStart)
+  xEnd = math.min(WIDTH, xEnd)
+  yStart = math.max(0,_yStart)
+  yEnd = math.min(HEIGHT, yEnd)
+  
   local data = loadedImage
   local bg = 0
   local fg = 0
