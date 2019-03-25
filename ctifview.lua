@@ -34,7 +34,7 @@ local pal = {}
 local M = {};
 
 local q = {}
-function init()
+function M.init()
   for i=0,255 do
     local dat = (i & 0x01) << 7
     dat = dat | (i & 0x02) >> 1 << 6
@@ -50,12 +50,12 @@ end
 
 init()
 
-function error(str)
+function M.error(str)
   print("ERROR: " .. str)
   os.exit()
 end
 
-function resetPalette(data)
+function M.resetPalette(data)
  for i=0,255 do
   if (i < 16) then
     if data == nil or data[3] == nil or data[3][i] == nil then
@@ -76,7 +76,7 @@ end
 
 resetPalette(nil)
 
-function r8(file)
+function M.r8(file)
   local byte = file:read(1)
   if byte == nil then
     return 0
@@ -85,12 +85,12 @@ function r8(file)
   end
 end
 
-function r16(file)
+function M.r16(file)
   local x = r8(file)
   return x | (r8(file) << 8)
 end
 
-function loadImage(filename)
+function M.loadImage(filename)
   local data = {}
   local file = io.open(filename, 'rb')
   local hdr = {67,84,73,70}
@@ -165,7 +165,7 @@ function loadImage(filename)
   return data
 end
 
-function gpuBG()
+function M.gpuBG()
   local a, al = gpu.getBackground()
   if al then
     return gpu.getPaletteColor(a)
@@ -173,7 +173,7 @@ function gpuBG()
     return a
   end
 end
-function gpuFG()
+function M.gpuFG()
   local a, al = gpu.getForeground()
   if al then
     return gpu.getPaletteColor(a)
@@ -182,7 +182,7 @@ function gpuFG()
   end
 end
 
-function drawImage(data, offx, offy)
+function M.drawImage(data, offx, offy)
   if offx == nil then offx = 0 end
   if offy == nil then offy = 0 end
 
