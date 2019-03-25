@@ -4,6 +4,10 @@ local ctifview = require("ctifview")
 local component = require("component")
 local unicode = require("unicode")
 local gpu = component.gpu;
+local transporters = {
+  gateRoom = {59,30}
+}
+
 
 function unknownEvent()
   -- do nothing if the event wasn't relevant
@@ -35,12 +39,23 @@ function debugLocation(x, y)
   gpu.set(x, y, msg)
 end
 
+function activateTransporter(x, y)
+  ctifview.drawImageSection(1, 1, 40, 2)
+  for k, v in pairs(transporters) do
+    if (v[1]-3 < x) and  (x < v[1]+3) and (v[2]-3 < y) and (y < v[2]+3) then
+      gpu.setForeground(0xFFFFFF)
+      gpu.setBackground(0x0)
+      gpu.set(2, 2, k)
+    end
+  end
+end
+
 local main_thread = thread.create(function()
   ctifview.show('lib/TransporterDisplay_320.ctif')
   while continueLoop do
     local id, _, x, y = event.pullMultiple("touch", "interrupted")
     if id == "touch" then
-      debugLocation(x,y)
+      activateTransporter(x,y)
     end
   end
 end)
