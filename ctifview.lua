@@ -32,6 +32,7 @@ local os = require("os")
 local pal = {}
 local WIDTH = 80
 local HEIGHT = 25
+local loadedImage = {}
 
 local M = {};
 
@@ -169,7 +170,7 @@ function M.loadImage(filename)
   
   gpu.setResolution(WIDTH, HEIGHT)
   M.resetPalette(data)
-  return data
+  loadedImage = data
 end
 
 function M.gpuBG()
@@ -189,8 +190,8 @@ function M.gpuFG()
   end
 end
 
-function M.drawImage(data)
-
+function M.drawImage()
+  local data = loadedImage
   local bg = 0
   local fg = 0
   local cw = 1
@@ -251,8 +252,8 @@ end
 
 function M.show(path)
   print('Loading image ' .. args[1])
-  local image = M.loadImage(path)
-  M.drawImage(image)
+  M.loadImage(path)
+  M.drawImage()
 end
 
 function M.clear()
