@@ -251,6 +251,7 @@ function drawImage(data, offx, offy)
 end
 
 function M.show(path)
+  print('Loading image ' .. args[1])
   local image = loadImage(path)
   drawImage(image)
 end
@@ -265,9 +266,7 @@ end
 if args[1] == nil then
   return M;
 else
-  print('Loading image ' .. args[1])
-  local image = loadImage(args[1])
-  drawImage(image)
+  show(args[1])
   
   while true do
       local name,addr,char,key,player = event.pull("key_down")
@@ -275,6 +274,7 @@ else
           break
       end
   end
+  clear();
 end
 
 return M;
