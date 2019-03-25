@@ -262,7 +262,9 @@ function M.clear()
   gpu.fill(1, 1, 80, 25, " ")
 end
 
-if args[1] != '' then
+if args[1] == nil then
+  return M;
+else then
   local image = M.loadImage(args[1])
   drawImage(image)
   
