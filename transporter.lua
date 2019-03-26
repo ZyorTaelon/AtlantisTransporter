@@ -3,6 +3,7 @@ local thread = require("thread")
 local ctifview = require("ctifview")
 local component = require("component")
 local unicode = require("unicode")
+local computer = require("computer")
 local gpu = component.gpu;
 local dialer = component.rftools_dialing_device
 local serialization = require("serialization")
@@ -38,7 +39,7 @@ local cleanup_thread = thread.create(function()
   continueLoop = false
   print("Interrupt received. Exiting")
   ctifview.clear();
-  shell.execute("reboot")
+  computer.shutdown(true)
 end)
 
 local lastX=nil
