@@ -31,6 +31,7 @@ local unicode = require("unicode")
 local keyboard = require("keyboard")
 local text = require("text")
 local os = require("os")
+local utf8 = require("utf8")
 local pal = {}
 local w, h = gpu.getResolution()
 local WIDTH = w
