@@ -19,6 +19,8 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+java -jar CTIFConverter-0.2.2.jar -m oc-tier3 -P preview_320.png -o TransporterDisplay_320.ctif TransporterDisplay_320.png
 ]]
 
 local args = {...}
@@ -191,7 +193,7 @@ function M.gpuFG()
   end
 end
 
-function M.drawImageSection(_xStart, xEnd, _yStart, yEnd)
+function M.drawImageSection(_xStart, xEnd, _yStart, yEnd, debug)
   xStart = math.max(0,_xStart)
   xEnd = math.min(WIDTH, xEnd)
   yStart = math.max(0,_yStart)
@@ -231,6 +233,13 @@ function M.drawImageSection(_xStart, xEnd, _yStart, yEnd)
       else
         if #str > 0 then
           gpu.set(x + 1 - unicode.wlen(str), y + 1, str)
+          if debug then
+            local tmpfg = gpu.getForeground()
+            gpu.setForeground(0xFFFFFF)
+            print('fg ' .. string.format("%x", tmpfg * 256))
+            print('str ' .. str)
+            gpu.setForeground(tmpfg)
+          end
         end
         if (gBG == fg and gFG ~= bg) or (gFG == bg and gBG ~= fg) then
           cw = 257 - cw
@@ -252,12 +261,20 @@ function M.drawImageSection(_xStart, xEnd, _yStart, yEnd)
     end
     if #str > 0 then
       gpu.set(WIDTH + 1 - unicode.wlen(str), y + 1, str)
+      if debug then
+        local tmpfg = gpu.getForeground()
+        gpu.setForeground(0xFFFFFF)
+        print('fg ' .. string.format("%x", tmpfg * 256))
+        print('str ' .. str)
+        gpu.setForeground(tmpfg)
+      end
     end
   end
 end
 
 function M.drawImage()
-  M.drawImageSection(0, WIDTH, 0, HEIGHT)
+  M.drawImageSection(0, WIDTH, 0, HEIGHT, false)
+  M.drawImageSection(85, 87, 47, 49, true)
 end
 
 function M.show(path)
