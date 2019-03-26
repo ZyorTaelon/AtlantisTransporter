@@ -46,8 +46,7 @@ local lastX=nil
 local lastY=nil
 local lastLen=nil
 function debugLocation(x, y)
-   ctifview.drawImageSection(1, 30, 1, 3)  
-
+  ctifview.drawImageSection(1, 40, 1, 3)  
   lastX = x
   lastY = y
   local msg = "user clicked (" .. x .. "," .. y .. ")";
@@ -62,22 +61,18 @@ function paintTransporterDots()
       gpu.setForeground(0xFF0000)
       gpu.setBackground(0x0)
       gpu.set(v.x-1, v.y-1, '▟')
---      gpu.set(v.x, v.y-1, '▐')
+      gpu.set(v.x, v.y, '▄')
       gpu.set(v.x+1, v.y-1, '▙')
       gpu.set(v.x-1, v.y+1, '▜')
       gpu.set(v.x+1, v.y+1, '▛')
+      gpu.setForeground(0xFFFFFF)
+      gpu.set(v.x+2, v.y, v.name)
   end
 end
 
 function activateTransporter(x, y)
---  gpu.setForeground(0x0)
---  gpu.setBackground(0x0)
---  ctifview.drawImageSection(1, 30, 1, 3)
   for k, v in pairs(transporters) do
     if (v.x-3 < x) and  (x < v.x+3) and (v.y-3 < y) and (y < v.y+3) then
---      gpu.setForeground(0xFFFFFF)
---      gpu.setBackground(0x0)
---      gpu.set(2, 2, v.name)
       dialer.dial(transmitter.position, v.position, v.dimension, true)
       return true
     end
@@ -92,6 +87,9 @@ local main_thread = thread.create(function()
   while continueLoop do
     local id, _, x, y = event.pullMultiple("touch", "interrupted")
     if id == "touch" then
+      if x > 115 and y > 59 then
+        computer.shutdown(true)
+      end
       if not activateTransporter(x,y) then
         debugLocation(x,y)
       end
