@@ -91,5 +91,5 @@ local main_thread = thread.create(function()
       end
     end
   end
---  activateTransporter(59,30)
+  shell.execute("reboot")
 end)
