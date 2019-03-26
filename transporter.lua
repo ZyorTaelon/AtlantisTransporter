@@ -64,14 +64,14 @@ function paintTransporterDots()
 end
 
 function activateTransporter(x, y)
-  gpu.setForeground(0x0)
-  gpu.setBackground(0x0)
-  ctifview.drawImageSection(1, 30, 1, 3)
+--  gpu.setForeground(0x0)
+--  gpu.setBackground(0x0)
+--  ctifview.drawImageSection(1, 30, 1, 3)
   for k, v in pairs(transporters) do
     if (v.x-3 < x) and  (x < v.x+3) and (v.y-3 < y) and (y < v.y+3) then
-      gpu.setForeground(0xFFFFFF)
-      gpu.setBackground(0x0)
-      gpu.set(2, 2, v.name)
+--      gpu.setForeground(0xFFFFFF)
+--      gpu.setBackground(0x0)
+--      gpu.set(2, 2, v.name)
       dialer.dial(transmitter.position, v.position, v.dimension, true)
       return true
     end
