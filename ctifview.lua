@@ -235,10 +235,15 @@ function M.drawImageSection(_xStart, xEnd, _yStart, yEnd, debug)
           gpu.set(x + 1 - unicode.wlen(str), y + 1, str)
           if debug then
             local tmpfg = gpu.getForeground()
+            local tmpbg = gpu.getBackground()
             gpu.setForeground(0xFFFFFF)
+            gpu.setBackground(0x0)
+            print('x = ' .. (WIDTH + 1 - unicode.wlen(str)) .. 'y = ' .. (y+1))
             print('fg ' .. string.format("%x", tmpfg * 256))
+            print('bg ' .. string.format("%x", tmpbg * 256))
             print('str ' .. str)
             gpu.setForeground(tmpfg)
+            gpu.setBackground(tmpbg)
           end
         end
         if (gBG == fg and gFG ~= bg) or (gFG == bg and gBG ~= fg) then
@@ -263,10 +268,15 @@ function M.drawImageSection(_xStart, xEnd, _yStart, yEnd, debug)
       gpu.set(WIDTH + 1 - unicode.wlen(str), y + 1, str)
       if debug then
         local tmpfg = gpu.getForeground()
+        local tmpbg = gpu.getBackground()
         gpu.setForeground(0xFFFFFF)
+        gpu.setBackground(0x0)
+        print('x = ' .. (WIDTH + 1 - unicode.wlen(str)) .. 'y = ' .. (y+1))
         print('fg ' .. string.format("%x", tmpfg * 256))
+        print('bg ' .. string.format("%x", tmpbg * 256))
         print('str ' .. str)
         gpu.setForeground(tmpfg)
+        gpu.setBackground(tmpbg)
       end
     end
   end
