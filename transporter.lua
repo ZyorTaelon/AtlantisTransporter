@@ -38,6 +38,7 @@ local cleanup_thread = thread.create(function()
   continueLoop = false
   print("Interrupt received. Exiting")
   ctifview.clear();
+  shell.execute("reboot")
 end)
 
 local lastX=nil
@@ -91,5 +92,4 @@ local main_thread = thread.create(function()
       end
     end
   end
-  shell.execute("reboot")
 end)
