@@ -193,7 +193,7 @@ function M.gpuFG()
   end
 end
 
-function M.drawImageSection(_xStart, xEnd, _yStart, yEnd, debug)
+function M.drawImageSection(_xStart, xEnd, _yStart, yEnd)
   xStart = math.max(0,_xStart)
   xEnd = math.min(WIDTH, xEnd)
   yStart = math.max(0,_yStart)
@@ -233,16 +233,6 @@ function M.drawImageSection(_xStart, xEnd, _yStart, yEnd, debug)
       else
         if #str > 0 then
           gpu.set(x + 1 - unicode.wlen(str), y + 1, str)
-          if debug then
-            local tmpfg = gpu.getForeground()
-            local tmpbg = gpu.getBackground()
-            gpu.setForeground(0xFFFFFF)
-            gpu.setBackground(0x0)
-            print('fg ' .. string.format("%x", tmpfg * 256) .. ' bg ' .. string.format("%x", tmpbg * 256))
-            print('gpu.set(' .. (x + 1 - unicode.wlen(str)) .. ', ' .. (y+1) .. ',' .. str .. ' = ' .. string.format("%x %x %x",  string.byte(str,1),  string.byte(str,2),  string.byte(str,3)) .. ') ' .. #str)
-            gpu.setForeground(tmpfg)
-            gpu.setBackground(tmpbg)
-          end
         end
         if (gBG == fg and gFG ~= bg) or (gFG == bg and gBG ~= fg) then
           cw = 257 - cw
@@ -264,23 +254,12 @@ function M.drawImageSection(_xStart, xEnd, _yStart, yEnd, debug)
     end
     if #str > 0 then
       gpu.set(WIDTH + 1 - unicode.wlen(str), y + 1, str)
-      if debug then
-        local tmpfg = gpu.getForeground()
-        local tmpbg = gpu.getBackground()
-        gpu.setForeground(0xFFFFFF)
-        gpu.setBackground(0x0)
-        print('fg ' .. string.format("%x", tmpfg * 256) .. ' bg ' .. string.format("%x", tmpbg * 256))
-        print('gpu.set(' .. (WIDTH + 1 - unicode.wlen(str)) .. ', ' .. (y+1) .. ',' .. str .. ' = ' .. string.format("%x %x %x",  string.byte(str,1),  string.byte(str,2),  string.byte(str,3)) .. ') ' .. #str)
-        gpu.setForeground(tmpfg)
-        gpu.setBackground(tmpbg)
-      end
     end
   end
 end
 
 function M.drawImage()
-  M.drawImageSection(0, WIDTH, 0, HEIGHT, false)
-  M.drawImageSection(84, 88, 46, 50, true)
+  M.drawImageSection(0, WIDTH, 0, HEIGHT)
 end
 
 function M.show(path)
