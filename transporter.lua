@@ -60,8 +60,12 @@ end
 function paintTransporterDots()
   for k, v in pairs(transporters) do
       gpu.setForeground(0xFF0000)
-      gpu.setBackground(0xFF0000)
-      gpu.set(v.x, v.y, ' ')
+      gpu.setBackground(0x0)
+      gpu.set(v.x-1, v.y-1, '▟')
+--      gpu.set(v.x, v.y-1, '▐')
+      gpu.set(v.x+1, v.y-1, '▙')
+      gpu.set(v.x-1, v.y+1, '▜')
+      gpu.set(v.x+1, v.y+1, '▛')
   end
 end
 
