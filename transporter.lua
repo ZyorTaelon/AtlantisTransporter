@@ -44,9 +44,7 @@ local lastX=nil
 local lastY=nil
 local lastLen=nil
 function debugLocation(x, y)
-  if lastX ~= nil then
-    ctifview.drawImageSection(1, 30, 1, 3)
-  end   
+   ctifview.drawImageSection(1, 30, 1, 3)  
 
   lastX = x
   lastY = y
@@ -54,7 +52,7 @@ function debugLocation(x, y)
   lastLen = unicode.wlen(msg)
   gpu.setForeground(0xFFFFFF)
   gpu.setBackground(0x0)
-  gpu.set(x, y, msg)
+  gpu.set(1, 1, msg)
 end
 
 function paintTransporterDots()
