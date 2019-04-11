@@ -11,7 +11,7 @@ local realX = 2240
 local realY = 210
 local realWidth = 784
 local realHeight = 740
-local dotSize = 1
+local dotSize = 2
 
 local transmitter = dialer.getTransmitters()[1];
 local transporters = {
