@@ -24,12 +24,15 @@ local toggle = true;
 function displayImage()
   if toggle then
     toggle = false
+    ctifview.clear();
     ctifview.show('lib/CitySchematic.ctif')
   else
     toggle = true
+    ctifview.clear();
     ctifview.show('lib/StargateDiagnostics.ctif')
   end
-  event.timer(10, displayImage, 1)
+  os.sleep(10)
+  displayImage()
 end
 
 local displayThread = thread.create(function()
