@@ -20,8 +20,23 @@ local cleanup_thread = thread.create(function()
   -- computer.shutdown(true)
 end)
 
+local toggle = true;
+function displayImage()
+  if toggle then
+    toggle = false
+    ctifview.show('lib/CitySchematic.ctif')
+  else
+    toggle = true
+    ctifview.show('lib/StargateDiagnostics.ctif')
+  end
+  event.timer(10, displayImage, 1)
+end
+
+local displayThread = thread.create(function()
+  displayImage()
+end)
+
 local main_thread = thread.create(function()
-  ctifview.show('lib/CitySchematic.ctif')
   while continueLoop do
     local id, _, x, y = event.pullMultiple("touch", "interrupted")
     if id == "touch" then
