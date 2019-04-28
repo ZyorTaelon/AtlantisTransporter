@@ -4,6 +4,7 @@ local filenames = {}
 filenames["ctifview.lua"] = "lib/ctifview.lua"
 filenames["TransporterDisplay_320.ctif"] = "lib/TransporterDisplay_320.ctif"
 filenames["transporter.lua"] = "transporter.lua"
+filenames[".shrc"] = ".shrc"
 
 local M = {};
 
