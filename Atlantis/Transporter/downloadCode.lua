@@ -1,10 +1,10 @@
 local os = require('os');
 local url = os.getenv('SERVER_LOCATION') .. '/';
 local filenames = {}
-filenames["ctifview.lua"] = "lib/ctifview.lua"
-filenames["TransporterDisplay_320.ctif"] = "lib/TransporterDisplay_320.ctif"
-filenames["transporter.lua"] = "transporter.lua"
-filenames[".shrc"] = ".shrc"
+filenames["Atlantis/shared/ctifview.lua"] = "lib/ctifview.lua"
+filenames["Atlantis/Transporter/TransporterDisplay_320.ctif"] = "lib/TransporterDisplay_320.ctif"
+filenames["Atlantis/Transporter/transporter.lua"] = "transporter.lua"
+filenames["Atlantis/Transporter/.shrc"] = ".shrc"
 
 local M = {};
 
