@@ -5,6 +5,9 @@ local component = require("component")
 local event = require("event")
 local term = require("term")
 local gpu = component.gpu
+local ser = require("serialization")
+local fs = require("filesystem")
+local config={flux_in="",flux_out=""}
 
  -- Safety Checks
 
@@ -12,7 +15,9 @@ if not component.isAvailable("draconic_reactor") then
   print("Reactor not connected. Please connect computer to reactor with an Adapter block.")
   os.exit()
 end
+
 reactor = component.draconic_reactor
+
 local flux_gates = {}
 for x,y in pairs(component.list("flux_gate")) do
   flux_gates[#flux_gates+1] = x
@@ -21,11 +26,23 @@ if #flux_gates < 2 then
   print("Not enough flux gates connected; please connect inflow and outflow flux gates with Adapter blocks.")
   os.exit()
 end
+
+--  Check the component ids of the flux gates against the config file. If no previous configuration is found go into config mode.
 flux_in = component.proxy(flux_gates[1])
 flux_out = component.proxy(flux_gates[2])
 if not flux_in or not flux_out then
   print("Not enough flux gates connected; please connect inflow and outflow flux gates with Adapter blocks.")
   os.exit()
+end
+
+if fs.exists("/home/config") then
+  print("reading config")
+  local file = io.open("config","r")
+  local str = file:read("*a")
+  file:close()
+  config = ser.unserialize(str)
+  flux_in = component.proxy(config.flux_in)
+  flux_out = component.proxy(config.flux_out)
 end
 
  -- Functions
@@ -104,6 +121,11 @@ local buttons = {
       local old_addr = flux_in.address
       flux_in = component.proxy(flux_out.address)
       flux_out = component.proxy(old_addr)
+      config.flux_in = flux_in.address
+      config.flux_out = flux_out.address
+      local file = io.open("config","w")
+      file:write(ser.serialize(config))
+      file:close()
     end,
     condition=function() return safe end
   },
@@ -395,7 +417,7 @@ while event_loop do
       "Field Strength:      " .. ((info.fieldStrength / info.maxFieldStrength) * 100) .. "%",
       "Energy Saturation:   " .. ((info.energySaturation / info.maxEnergySaturation) * 100) .. "%",
       "Fuel Concentration:  " .. ((1 - info.fuelConversion / info.maxFuelConversion) * 100) .. "%",
-      "Temperature:         " .. info.temperature .. " F",
+      "Temperature:         " .. info.temperature .. " C",
       "Reactor Efficiency:  " .. info.fuelConversionRate .. " nb/t",
       "Energy Inflow Rate:  " .. inflow .. " RF/t",
       "Energy Outflow Rate: " .. outflow .. " RF/t"
